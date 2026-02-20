@@ -15,7 +15,7 @@ class Raman:
     Calculator for raman properties using precalculated eigenvector, eigenvalues. 
     '''
 
-    def __init__(atoms, calculator, eigenvector, eigenvalues):
+    def __init__(self, atoms, calculator, eigenvector, eigenvalues):
         '''
         construct a Raman class.
         '''
@@ -96,7 +96,7 @@ class Phonon:
     '''
     phonon_run_name = './cache_folder/'
 
-    def __init__(atoms, calculator, eigenvector, eigenvalues, relaxed=False):
+    def __init__(self,atoms, calculator, eigenvector, eigenvalues, relaxed=False):
         '''
         construct a Raman class.
         '''
