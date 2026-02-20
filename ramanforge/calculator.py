@@ -83,9 +83,9 @@ class Raman:
         self.activity = activity
 
     def calculate(self, quantity = 'dq', **dq_kwargs):
-        if 'quantity' == 'dq':
+        if quantity == 'dq':
             self._calculate_dq()
-        if 'quantity' == 'activity':
+        if quantity == 'activity':
             self._calculate_dq()
     
 
