@@ -84,9 +84,9 @@ class Raman:
 
     def calculate(self, quantity = 'dq', **dq_kwargs):
         if quantity == 'dq':
-            self._calculate_dq()
+            self._calculate_dq(**dq_kwargs)
         if quantity == 'activity':
-            self._calculate_dq()
+            self._calculate_dq(**dq_kwargs)
     
 
 class Phonon:
