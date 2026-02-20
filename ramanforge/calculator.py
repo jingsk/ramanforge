@@ -1,4 +1,4 @@
-from becderqsdr.calculator import calculate_becder
+from becderqspr.calculator import calculate_becder
 import torch
 import numpy as np
 from ase.units import invcm
