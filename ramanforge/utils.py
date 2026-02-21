@@ -30,6 +30,68 @@ def charge_derivative(charge1, chargem1, chargex, chargey, chargez, chargemx, ch
 
     return dq
 
+def gaussian(x, x0, sigma, amplitude):
+    """
+    Gaussian function.
+    
+    Parameters:
+    -----------
+    x : array-like
+        x-axis values (energy grid)
+    x0 : float
+        Center position of the Gaussian
+    sigma : float
+        Standard deviation (controls width)
+    amplitude : float
+        Height/intensity of the Gaussian
+        
+    Returns:
+    --------
+    array
+        Gaussian function values
+    """
+    return amplitude * np.exp(-((x - x0)**2) / (2 * sigma**2))
+
+def apply_gaussian_broadening(x_data, y_data, x_grid, sigma):
+    """
+    Apply Gaussian broadening by replacing each data point with a Gaussian.
+    
+    Parameters:
+    -----------
+    x_data : array-like
+        Original energy values in cm⁻¹
+    y_data : array-like
+        Original Raman intensity values
+    x_grid : array-like
+        Uniform grid for the broadened spectrum
+    sigma : float
+        Standard deviation for Gaussian broadening (FWHM ≈ 2.355 * sigma)
+        
+    Returns:
+    --------
+    x_grid : array
+        Energy grid
+    y_broadened : array
+        Broadened intensity values
+    individual_gaussians : list of arrays
+        List containing each individual Gaussian component
+    """
+    x_data = np.asarray(x_data)
+    y_data = np.asarray(y_data)
+    x_grid = np.asarray(x_grid)
+    
+    # Initialize broadened spectrum
+    y_broadened = np.zeros_like(x_grid)
+    individual_gaussians = []
+    
+    # Add Gaussian for each data point
+    for x0, amplitude in zip(x_data, y_data):
+        gauss = gaussian(x_grid, x0, sigma, amplitude)
+        y_broadened += gauss
+        individual_gaussians.append(gauss)
+    
+    return x_grid, y_broadened
+
 rot_deg = np.pi/4
 dE = 0.1
 
