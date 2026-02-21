@@ -90,15 +90,13 @@ class Raman:
     
 
 class Phonon:
-    from subprocess import check_call
     '''
     Calculator phonon eigenvector, eigenvalues using finite difference method. 
     '''
-    phonon_run_name = './cache_folder/'
 
-    def __init__(self,atoms, calculator, eigenvector, eigenvalues, relaxed=False):
+    def __init__(self,atoms, calculator, relaxed=False):
         '''
-        construct a Raman class.
+        construct a Phonon class.
         '''
         self.atoms = atoms
         self.calculator = calculator
@@ -107,6 +105,7 @@ class Phonon:
         self.relaxed = relaxed
     
     def relax(self):
+        from subprocess import check_call
         self.atoms = self.calculator
         check_call('mkdir -p log', shell=True)
         check_call('mkdir -p traj', shell=True)
@@ -123,11 +122,13 @@ class Phonon:
 
 
     def calculate(self):
+        from ase.phonons import Phonons
+        phonon_run_name = './cache_folder/'
         if not self.relaxed:
             logging.info('Structure has not been relaxed explicitly. Consider trying Phonon.relax()')
-        atoms.calc = calc(**calc_kwargs, **vasp_kwargs)
+        #atoms.calc = seld.calculator
         N = 6
-        ph = Phonons(atoms, calc(**calc_kwargs), supercell=(N, N, 1), delta=0.05, name = phonon_run_name)
+        ph = Phonons(self.atoms, self.calculator, supercell=(N, N, 1), delta=0.05, name = phonon_run_name)
         ph.run()
         # Read forces and assemble the dynamical matrix
         ph.read(acoustic=True)
@@ -140,5 +141,5 @@ class Phonon:
         #dos = ph.get_dos(kpts=(20, 20, 20)).sample_grid(npts=100, width=1e-3)
         #np.savetxt('dos.csv', np.column_stack([dos.get_energies(), dos.get_weights()]))    
         evals, evec = ph.band_structure([[0,0,0]], modes=True)
-        self.eigenvalues = evals[0],
+        self.eigenvalues = evals[0]
         self.eigenvector = np.reshape(evec, (-1,9))
