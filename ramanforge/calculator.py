@@ -89,12 +89,17 @@ class Raman:
             self._calculate_activity(**dq_kwargs)
     
     def spectrum(self, xmin, xmax, xstep):
+        '''
+        expect xmin, ymin in invcm
+        return x,y in cm-1, arb unt.
+        '''
+
         from ramanforge.utils import apply_gaussian_broadening
-        sigma = 2.0
+        sigma = 2.0 # cm-1
         x_grid = np.linspace(xmin,xmax, xstep)
 
         # Apply Gaussian convolution to each dataset
-        x1_conv, y1_conv = apply_gaussian_broadening(self.eigenvalues, self.activity, x_grid, sigma)
+        x1_conv, y1_conv = apply_gaussian_broadening(self.eigenvalues / invcm, self.activity, x_grid, sigma)
         return x1_conv, y1_conv
     
 
