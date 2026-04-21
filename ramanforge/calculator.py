@@ -51,7 +51,7 @@ class Raman:
             #eigvector divided by square root of mass
             eigvec = self.eigenvector[s].reshape((nat,3))
             
-            ra_tot = np.einsum('tikj,ti->jk', dq, eigvec) 
+            ra_tot = np.einsum('tikj,ti->jk', self.dq, eigvec) 
             #global constant
             ra = ra_tot /(4.0*np.pi*epslon_0)
             
