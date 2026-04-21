@@ -51,22 +51,7 @@ class Raman:
             #eigvector divided by square root of mass
             eigvec = self.eigenvector[s].reshape((nat,3))
             
-            #polariazation tensor
-            ra_tot = np.zeros((3,3))
-            for t in range(nat):
-                dqt = self.dq[t]
-                eigvect = eigvec[t,:]
-                
-                #Eq.7
-                act = np.zeros((3,3,3))
-                for i in range(3):
-                    for j in range(3):
-                        for k in range(3):
-                            act[i,j,k] = dqt[i,k,j]*eigvect[i]
-
-                rat = act[0,:,:] + act[1,:,:] + act[2,:,:]
-                ra_tot += rat
-            
+            ra_tot = np.einsum('tikj,ti->jk', dq, eigvec) 
             #global constant
             ra = ra_tot /(4.0*np.pi*epslon_0)
             
